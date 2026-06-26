@@ -1,11 +1,11 @@
-version: 2
 updates:
-  - package-ecosystem: cargo
-    directory: /
+  - directory: /
     groups:
       all-dependencies:
         patterns:
           - '*'
     open-pull-requests-limit: 5
+    package-ecosystem: cargo
     schedule:
       interval: weekly
+version: 2

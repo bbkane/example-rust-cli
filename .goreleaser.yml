@@ -6,15 +6,21 @@
 # yaml-language-server: $schema=https://goreleaser.com/static/schema.json
 # vim: set ts=2 sw=2 tw=0 fo=cnqoj
 
-version: 2
-
+archives:
+  - format_overrides:
+      - formats:
+          - zip
+        goos: windows
+    formats:
+      - tar.gz
+    id: archives
+    name_template: '{{ .ProjectName }}_ {{- title .Os }}_ {{- if eq .Arch "amd64" }}x86_64 {{- else if eq .Arch "386" }}i386 {{- else }}{{ .Arch }}{{ end }}'
 before:
   hooks:
     # Setup Rust environment for cross-compilation
     - rustup default stable
     - cargo install --locked cargo-zigbuild
     - cargo fetch --locked
-
 builds:
   - builder: rust
     flags:
@@ -26,24 +32,15 @@ builds:
       - x86_64-pc-windows-gnu
       - aarch64-unknown-linux-gnu
       - aarch64-apple-darwin
-
-archives:
-  - id: archives
-    formats: [tar.gz]
-    format_overrides:
-      - goos: windows
-        formats: [zip]
-    name_template: >-
-      {{ .ProjectName }}_
-      {{- title .Os }}_
-      {{- if eq .Arch "amd64" }}x86_64
-      {{- else if eq .Arch "386" }}i386
-      {{- else }}{{ .Arch }}{{ end }}
-
+changelog:
+  filters:
+    exclude:
+      - '^docs:'
+      - '^test:'
+  sort: asc
 checksum:
-  name_template: checksums.txt
   algorithm: sha256
-
+  name_template: checksums.txt
 # Homebrew cask publishing
 homebrew_casks:
   - binaries:
@@ -59,17 +56,9 @@ homebrew_casks:
       name: homebrew-tap
       owner: bbkane
       token: '{{ .Env.KEY_GITHUB_GORELEASER_TO_HOMEBREW_TAP }}'
-
-changelog:
-  sort: asc
-  filters:
-    exclude:
-      - '^docs:'
-      - '^test:'
-
 release:
-  footer: >-
+  footer: |-
 
     ---
-
     Released by [GoReleaser](https://github.com/goreleaser/goreleaser).
+version: 2

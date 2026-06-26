@@ -5,12 +5,14 @@
 
 pre-commit:
   commands:
-    cargo-fmt:
-      run: cargo fmt --check
     cargo-check:
       run: cargo check --all-targets --all-features
     cargo-clippy:
       run: cargo clippy --all-targets --all-features -- -D warnings
+    cargo-fmt:
+      run: cargo fmt --check
     cargo-test:
       run: cargo test
+    yamllint:
+      run: yamllint .
   parallel: true
