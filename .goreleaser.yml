@@ -10,8 +10,7 @@ version: 2
 
 before:
   hooks:
-    # if you don't do these things before calling goreleaser, it might be a
-    # good idea to do them here:
+    # Setup Rust environment for cross-compilation
     - rustup default stable
     - cargo install --locked cargo-zigbuild
     - cargo fetch --locked
@@ -20,6 +19,7 @@ builds:
   - builder: rust
     flags:
       - --release
+      - --locked
     targets:
       - x86_64-unknown-linux-gnu
       - x86_64-apple-darwin
@@ -28,25 +28,44 @@ builds:
       - aarch64-apple-darwin
 
 archives:
-  - formats: [tar.gz]
-    # this name template makes the OS and Arch compatible with the results of `uname`.
+  - id: archives
+    formats: [tar.gz]
+    format_overrides:
+      - goos: windows
+        formats: [zip]
     name_template: >-
       {{ .ProjectName }}_
       {{- title .Os }}_
       {{- if eq .Arch "amd64" }}x86_64
       {{- else if eq .Arch "386" }}i386
       {{- else }}{{ .Arch }}{{ end }}
-    # use zip for windows archives
-    format_overrides:
-      - goos: windows
-        formats: [zip]
+
+checksum:
+  name_template: checksums.txt
+  algorithm: sha256
+
+# Homebrew cask publishing
+homebrew_casks:
+  - binaries:
+      - example-rust-cli
+    caveats: |
+      Unfortunately, Apple wants to charge developers $100/year to distribute
+      their apps without a big scary "... the developer cannot be verified"
+      warning. I'm not willing to pay that to give away free apps.
+      See https://www.macworld.com/article/3140183/how-to-install-an-app-in-macos-sierra-thats-not-signed-by-a-developer.html to work around that
+    description: Example Rust CLI to model tooling
+    homepage: https://github.com/bbkane/example-rust-cli
+    repository:
+      name: homebrew-tap
+      owner: bbkane
+      token: '{{ .Env.KEY_GITHUB_GORELEASER_TO_HOMEBREW_TAP }}'
 
 changelog:
   sort: asc
   filters:
     exclude:
-      - "^docs:"
-      - "^test:"
+      - '^docs:'
+      - '^test:'
 
 release:
   footer: >-
