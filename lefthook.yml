@@ -15,4 +15,5 @@ pre-commit:
       run: cargo test
     yamllint:
       run: yamllint .
+  fail_on_changes: always
   parallel: true
