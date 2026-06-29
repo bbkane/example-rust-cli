@@ -19,7 +19,7 @@ jobs:
           targets: x86_64-unknown-linux-gnu,x86_64-apple-darwin,x86_64-pc-windows-gnu,aarch64-unknown-linux-gnu,aarch64-apple-darwin
       # https://github.com/mlugg/setup-zig
       - name: Install Zig
-        uses: mlugg/setup-zig@v1
+        uses: mlugg/setup-zig@v2
       - name: Cache Rust dependencies
         uses: Swatinem/rust-cache@v2
       - name: Install cargo-zigbuild
