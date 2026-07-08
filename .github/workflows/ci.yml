@@ -25,6 +25,27 @@ jobs:
           components: rustfmt
       - name: Check formatting
         run: cargo fmt -- --check
+  taplo:
+    name: TOML fmt
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+      - id: cache-taplo
+        name: Cache taplo
+        uses: actions/cache@v4
+        with:
+          key: brew-taplo
+          path: /home/linuxbrew/.linuxbrew/Cellar/taplo
+      - if: steps.cache-taplo.outputs.cache-hit != 'true'
+        name: Install taplo
+        run: |-
+          eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
+          brew install taplo
+      - name: Check TOML formatting
+        run: |-
+          eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
+          taplo fmt --check
   test:
     name: Test Suite
     runs-on: ubuntu-latest

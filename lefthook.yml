@@ -13,6 +13,8 @@ pre-commit:
       run: cargo fmt --check
     cargo-test:
       run: cargo test
+    taplo-fmt:
+      run: taplo fmt --check
     yamllint:
       run: yamllint .
   fail_on_changes: always
