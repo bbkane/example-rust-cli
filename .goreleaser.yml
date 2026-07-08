@@ -1,8 +1,3 @@
-# This is an example .goreleaser.yml file with some sensible defaults.
-# Make sure to check the documentation at https://goreleaser.com
-
-# The lines below are called `modelines`. See `:help modeline`
-# Feel free to remove those if you don't want/need to use them.
 # yaml-language-server: $schema=https://goreleaser.com/static/schema.json
 # vim: set ts=2 sw=2 tw=0 fo=cnqoj
 
@@ -41,7 +36,7 @@ changelog:
 checksum:
   algorithm: sha256
   name_template: checksums.txt
-# Homebrew cask publishing
+# https://goreleaser.com/customization/publish/homebrew_casks/
 homebrew_casks:
   - binaries:
       - example-rust-cli
@@ -52,13 +47,20 @@ homebrew_casks:
       See https://www.macworld.com/article/3140183/how-to-install-an-app-in-macos-sierra-thats-not-signed-by-a-developer.html to work around that
     description: Example Rust CLI to model tooling
     homepage: https://github.com/bbkane/example-rust-cli
+    hooks:
+      post:
+        install: |
+          system_command "/usr/bin/xattr", args: ["-dr", "com.apple.quarantine", "#{staged_path}/example-rust-cli"] if OS.mac?
     repository:
       name: homebrew-tap
       owner: bbkane
       token: '{{ .Env.KEY_GITHUB_GORELEASER_TO_HOMEBREW_TAP }}'
-release:
-  footer: |-
-
-    ---
-    Released by [GoReleaser](https://github.com/goreleaser/goreleaser).
+# https://goreleaser.com/customization/publish/scoop/
+scoops:
+  - description: Example Rust CLI to model tooling
+    homepage: https://github.com/bbkane/example-rust-cli
+    repository:
+      name: scoop-bucket
+      owner: bbkane
+      token: '{{ .Env.KEY_GITHUB_GORELEASER_TO_HOMEBREW_TAP }}'
 version: 2
