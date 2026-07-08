@@ -1,4 +1,5 @@
-use clap::{Args, Parser, Subcommand};
+use clap::{Args, CommandFactory, Parser, Subcommand};
+use clap_complete::{Shell, generate};
 
 #[derive(Args)]
 struct HelloArgs {
@@ -19,6 +20,9 @@ enum Commands {
 
     #[command(about = "Say hello")]
     Hello(HelloArgs),
+
+    #[command(about = "Print shell completion scripts")]
+    Completion { shell: Shell },
 }
 
 fn main() {
@@ -30,6 +34,14 @@ fn main() {
         }
         Commands::Hello(args) => {
             println!("Hello {}!", args.name);
+        }
+        Commands::Completion { shell } => {
+            generate(
+                *shell,
+                &mut Cli::command(),
+                env!("CARGO_PKG_NAME"),
+                &mut std::io::stdout(),
+            );
         }
     }
 }

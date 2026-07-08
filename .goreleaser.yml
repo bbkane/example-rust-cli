@@ -46,6 +46,10 @@ homebrew_casks:
       warning. I'm not willing to pay that to give away free apps.
       See https://www.macworld.com/article/3140183/how-to-install-an-app-in-macos-sierra-thats-not-signed-by-a-developer.html to work around that
     description: Example Rust CLI to model tooling
+    generate_completions_from_executable:
+      args:
+        - completion
+      executable: example-rust-cli
     homepage: https://github.com/bbkane/example-rust-cli
     hooks:
       post:
