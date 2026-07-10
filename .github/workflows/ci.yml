@@ -31,12 +31,6 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
-      - id: cache-taplo
-        name: Cache taplo
-        uses: actions/cache@v4
-        with:
-          key: brew-taplo
-          path: /home/linuxbrew/.linuxbrew/Cellar/taplo
       - name: Install taplo
         run: |-
           eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
