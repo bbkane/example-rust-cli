@@ -37,8 +37,7 @@ jobs:
         with:
           key: brew-taplo
           path: /home/linuxbrew/.linuxbrew/Cellar/taplo
-      - if: steps.cache-taplo.outputs.cache-hit != 'true'
-        name: Install taplo
+      - name: Install taplo
         run: |-
           eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
           brew install taplo
