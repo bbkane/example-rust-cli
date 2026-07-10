@@ -33,7 +33,7 @@ fn main() {
             println!("v{}", env!("CARGO_PKG_VERSION"));
         }
         Commands::Hello(args) => {
-            println!("Hello {}!", args.name);
+            println!("Hello there {}!", args.name);
         }
         Commands::Completion { shell } => {
             generate(
