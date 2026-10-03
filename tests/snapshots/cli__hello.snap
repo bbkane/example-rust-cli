@@ -1,0 +1,16 @@
+---
+source: tests/cli.rs
+assertion_line: 17
+info:
+  program: example-rust-cli
+  args:
+    - hello
+    - "--name"
+    - Ben
+---
+success: true
+exit_code: 0
+----- stdout -----
+Hello there Ben!
+
+----- stderr -----

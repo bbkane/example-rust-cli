@@ -42,3 +42,35 @@ scoop install bbkane/example-rust-cli
 # Dev notes
 
 See: [CLI Project Notes | Ben's Corner](https://www.bbkane.com/blog/cli-project-notes)
+
+## Snapshot Testing
+
+Install `cargo-insta`:
+
+```bash
+cargo install cargo-insta
+```
+
+Run snapshot tests:
+
+```bash
+cargo insta test
+```
+
+Agents: inspect every `.snap.new` file, then accept the snapshots without opening the review TUI:
+
+```bash
+cargo insta accept
+```
+
+Humans: use the TUI to review snapshots:
+
+```bash
+cargo insta review
+```
+
+Delete snapshots that are no longer referenced by tests:
+
+```bash
+cargo insta test --unreferenced delete
+```

@@ -1,0 +1,14 @@
+---
+source: tests/cli.rs
+assertion_line: 12
+info:
+  program: example-rust-cli
+  args:
+    - version
+---
+success: true
+exit_code: 0
+----- stdout -----
+v0.1.8
+
+----- stderr -----
